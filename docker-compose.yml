@@ -1,0 +1,16 @@
+services:
+  authservice:
+    image: ${DOCKER_REGISTRY-}authservice
+    ports:
+      - "54194:8080"
+    build:
+      context: .
+      dockerfile: AuthService/Dockerfile
+
+  productservice:
+    image: ${DOCKER_REGISTRY-}productservice
+    ports:
+      - "54195:8081"
+    build:
+      context: .
+      dockerfile: ProductService/Dockerfile
