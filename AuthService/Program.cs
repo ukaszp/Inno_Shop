@@ -1,9 +1,9 @@
-using AuthService;
 using AuthService.Data;
 using AuthService.Entities;
 using AuthService.Seeders;
-using AuthService.Services;
 using AuthService.Services.Interfaces;
+using AuthService.Services;
+using AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

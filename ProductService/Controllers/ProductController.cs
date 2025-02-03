@@ -15,7 +15,7 @@ public class ProductsController : ControllerBase
         _productService = productService;
     }
 
-    // GET: api/products?search=...&minPrice=...&maxPrice=...
+    // GET: api/products?search=.
     [HttpGet]
     public async Task<IActionResult> GetProducts([FromQuery] string search, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
     {

@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProductService.Data;
 using ProductService.Data.DTOs;
 using ProductService.Entities;
@@ -33,7 +32,6 @@ namespace ProductService.Services
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-
             var product = await _context.Products.FindAsync(id);
             if (product == null)
                 throw new KeyNotFoundException("Product not found.");
@@ -61,10 +59,10 @@ namespace ProductService.Services
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null)
-                throw new KeyNotFoundException("Produkt nie został znaleziony.");
+                throw new KeyNotFoundException("Product not found.");
 
             if (product.CreatorUserId != userId)
-                throw new UnauthorizedAccessException("Brak uprawnień do edycji tego produktu.");
+                throw new UnauthorizedAccessException("You do not have permission to edit this product.");
 
             product.Name = dto.Name;
             product.Description = dto.Description;
@@ -78,10 +76,10 @@ namespace ProductService.Services
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null)
-                throw new KeyNotFoundException("Produkt nie został znaleziony.");
+                throw new KeyNotFoundException("Product not found.");
 
             if (product.CreatorUserId != userId)
-                throw new UnauthorizedAccessException("Brak uprawnień do usunięcia tego produktu.");
+                throw new UnauthorizedAccessException("You do not have permission to delete this product.");
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();

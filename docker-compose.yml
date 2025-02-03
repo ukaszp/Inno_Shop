@@ -1,16 +1,60 @@
+version: '3.9'
+
 services:
-  authservice:
-    image: ${DOCKER_REGISTRY-}authservice
+  authservice.database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: authdb
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "password1234"
     ports:
-      - "54194:8080"
+      - "1433:1433"
+    networks:
+      - app-network
+
+  productservice.database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: productsdb
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "password1234"
+    ports:
+      - "1434:1433"
+    networks:
+      - app-network
+
+  authservice:
     build:
       context: .
       dockerfile: AuthService/Dockerfile
+    depends_on:
+      - authservice.database
+    environment:
+      DB_HOST: authservice.database
+      DB_NAME: authserviceapp
+      DB_SA_PASSWORD: "password1234"
+    networks:
+      - app-network
+    ports:
+      - "8080:80"
+      - "8081:443"
 
   productservice:
-    image: ${DOCKER_REGISTRY-}productservice
-    ports:
-      - "54195:8081"
     build:
       context: .
       dockerfile: ProductService/Dockerfile
+    depends_on:
+      - productservice.database
+    environment:
+      DB_HOST: productservice.database
+      DB_NAME: productserviceapp
+      DB_SA_PASSWORD: "password1234"
+    networks:
+      - app-network
+    ports:
+      - "8082:80"
+      - "8083:443"
+
+networks:
+  app-network:
+    driver: bridge
